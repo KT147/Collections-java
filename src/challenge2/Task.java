@@ -1,5 +1,6 @@
 package challenge2;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 enum Status {IN_QUEUE, ASSIGNED, IN_PROGRESS};
@@ -80,7 +81,7 @@ public class Task implements Comparable<Task> {
 
     @Override
     public String toString() {
-        return "%-20s %-25s %-10s %-10s %s".formatted(name, description, priority, assignee, status);
+        return "%-20s %-25s %-10s %-10s %s".formatted(assignee, name, description, priority, status);
     }
 
     @Override
@@ -99,10 +100,14 @@ public class Task implements Comparable<Task> {
     @Override
     public int compareTo(Task o) {
 
-        int result = this.name.compareTo(o.name);
+        int result = Comparator.nullsLast(String::compareTo)
+                .compare(this.name, o.name);
+
         if (result == 0) {
-            result = this.description.compareTo(o.description);
+            result = Comparator.nullsLast(String::compareTo)
+                    .compare(this.description, o.description);
         }
+
         return result;
     }
 }
